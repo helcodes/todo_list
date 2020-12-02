@@ -2,13 +2,22 @@
     <div class="wrapper">
     <div id="newtodo">
       <input type="text" name="todo-text" v-model.trim="newTodoText"
-        id="todo-text" placeholder="New todo">
-      <button v-on:click="addTodo()">Add</button>
+        class="todo-text" placeholder="New todo"/>
+      <datepicker v-on:update="dateUpdated"/>
+      <button class="toto-add-button" v-on:click="addTodo()">Add</button>
     </div>
-    <ul class="todo">
-      <li v-for="todo in todos" :key="todo.id">
-        <span>{{todo.text}}</span>
-        <button v-on:click="removeTodo(todo)">Remove</button>
+
+    <ul>
+      <li class="todo">
+        <span class="todo-text list-header">Todo</span>
+        <span class="todo-date list-header">Due Date</span>
+        <span class="todo-empty-button list-header"></span>
+      </li>
+
+      <li class="todo" v-for="todo in todos" :key="todo.id">
+        <!--<span>{{todo.text}}</span>
+        <button v-on:click="removeTodo(todo)">Remove</button>-->
+        <todo :todo="todo" v-on:remove="removeTodo(todo)"/>
       </li>
     </ul>
     <!--p class="none" v-else>Add a new todo in the input above</p-->
@@ -17,14 +26,19 @@
 
 
 <script>
+import datepicker from './components/datepicker.vue'
+import todo from './components/todo.vue'
 export default {
   name: 'App',
   components: {
+    datepicker,
+    todo
   },
   data () {
     return {
         newTodoText: "",
-        todos: []
+        newTodoDate: "",
+        todos: [],
     }
   },
   methods: {
@@ -35,8 +49,11 @@ export default {
           // a todo item consists of the text and an id, and we will simply use the current time for the id
           this.todos.push({
               text: this.newTodoText,
-              id: Date.now()
+              date: this.newTodoDate,
+              id: Date.now(),
+              done: false
           })
+          this.todos.sort((todoA,todoB) => -todoA.date.diff(todoB.date))
           // after addind the todo item, clear the text
           this.newTodoText = ''
       }
@@ -46,6 +63,9 @@ export default {
       // this.todos.filter() filters out all occurences of this item from the list this.todos
       // we simply re-assign the filtered list of todos to list.todos
       this.todos = this.todos.filter(_item => _item !== item)
+    },
+    dateUpdated (date) {
+      this.newTodoDate=date.clone()
     }
   }
 }
