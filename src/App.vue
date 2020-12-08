@@ -4,10 +4,10 @@
       <input type="text" name="todo-text" v-model.trim="newTodoText"
         class="todo-text" placeholder="New todo"/>
       <datepicker v-on:update="dateUpdated"/>
-      <button class="toto-add-button" v-on:click="addTodo()">Add</button>
+      <button class="todo-add-button" v-on:click="addTodo()">Add</button>
     </div>
 
-    <ul>
+    <ul v-if="todos.length">
       <li class="todo">
         <span class="todo-text list-header">Todo</span>
         <span class="todo-date list-header">Due Date</span>
@@ -20,7 +20,7 @@
         <todo :todo="todo" v-on:remove="removeTodo(todo)"/>
       </li>
     </ul>
-    <!--p class="none" v-else>Add a new todo in the input above</p-->
+    <p class="none" v-else>Add a new todo in the input above</p>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
               date: this.newTodoDate,
               id: Date.now(),
               done: false
-          })
+          });
           this.todos.sort((todoA,todoB) => -todoA.date.diff(todoB.date))
           // after addind the todo item, clear the text
           this.newTodoText = ''
@@ -67,35 +67,85 @@ export default {
     dateUpdated (date) {
       this.newTodoDate=date.clone()
     }
-  }
-}
+  },
+};
 </script>
 
 
 
 <style>
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-html, body {
-  font: 16px/1.2 BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+html,
+body {
+  font: 16px/1.2 BlinkMacSystemFont, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
   padding: 10px;
 }
-
 .wrapper {
   width: 75%;
   margin: 0 auto;
 }
-
-#newtodo {
+.newtodo {
+  display: flex;
   width: 100%;
 }
-
-input {
-  width: 90%;
+.todo {
+  display: flex;
+  width: 100%;
+  margin-bottom: 5px;
 }
-
+.list-header {
+  text-align: center;
+  padding: 5px;
+  margin-left: 2px;
+  margin-right: 2px;
+  background-color: #eee;
+  color: black;
+}
+.todo-text {
+  flex: 4;
+  text-align: center;
+}
+.todo-date {
+  flex: 3;
+  text-align: center;
+}
+.todo-add-button {
+  flex: 1;
+  border: 1px solid green;
+  background: green;
+  color: white;
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  cursor: pointer;
+  margin-left: 2px;
+  margin-right: 2px;
+  outline: none;
+}
+.todo-remove-button {
+  flex: 1;
+  border: 1px solid red;
+  background-color: red;
+  color: white;
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  cursor: pointer;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.todo-empty-button {
+  flex: 1;
+  padding: 2px 4px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+ul, li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ul {
+    margin-top: 40px;
+}
 button {
   border: 1px solid green;
   background: green;
@@ -103,42 +153,9 @@ button {
   font-size: 0.8rem;
   padding: 2px 4px;
   cursor: pointer;
-  width: 10%;
 }
-
-
-form #todo-text {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #777;
-}
-
-ul, li {
-  margin: 0;
-  padding: 0;
-}
-
 p.none {
   color: #888;
   font-size: small;
-}
-
-.todo li {
-  display: flex;
-  margin: 5px 0;
-}
-
-.todo li span {
-  flex: 1;
-}
-
-
-.todo li button {
-  border: 1px solid red;
-  background: red;
-  color: white;
-  font-size: 0.8rem;
-  padding: 2px 4px;
-  cursor: pointer;
 }
 </style>
