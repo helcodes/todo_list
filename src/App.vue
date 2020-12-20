@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+     <div class="wrapper">
     <div id="newtodo">
       <input type="text" name="todo-text" v-model.trim="newTodoText"
         class="todo-text" placeholder="New todo"/>
@@ -88,12 +88,13 @@ body {
   display: flex;
   width: 100%;
 }
+
 .todo {
   display: flex;
   width: 100%;
-  margin-bottom: 5px;
 }
-.list-header {
+
+.list-header{
   text-align: center;
   padding: 5px;
   margin-left: 2px;
