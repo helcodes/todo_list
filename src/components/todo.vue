@@ -13,7 +13,8 @@ export default {
       'color': String
   },
   emits: [
-      'remove'
+      'remove',
+      'done'
   ],
   data () {
     return {
@@ -22,6 +23,10 @@ export default {
   methods: {
     remove () {
         this.$emit('remove')
+    },
+    done(){
+      //this.todo.done=true
+      this.$emit('done')
     },
     todoColour() {
       if (this.todo.date.isSame(moment(), 'day')) {
